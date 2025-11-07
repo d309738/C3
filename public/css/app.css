@@ -1,0 +1,39 @@
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header{
+    background-color: blue;
+    color: yellow;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 50px;
+    height: 100px;
+}
+nav{
+    display: flex;
+    gap: 20px;
+}
+header a{
+    text-decoration: none;
+    color: yellow;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+main{
+    flex: 1;
+    padding: 20px 50px;
+}
+
+footer{
+    background-color: blue;
+    color: yellow;
+    display: flex;
+    align-items: center;
+    padding: 10px 50px;
+    height: 100px;
+}
