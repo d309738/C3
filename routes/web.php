@@ -3,8 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+// 🔹 Homepage verwijst nu naar resources/views/pages/index.blade.php
 Route::get('/', function () {
-    return view('welcome');
+    return view('pages.index');
 });
 
 Route::middleware('auth')->group(function () {
@@ -19,4 +20,9 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 })->middleware('verified');
 
-require __DIR__.'/auth.php';
+// 🔹 Optioneel: extra route /welcome (ook naar index.blade.php)
+Route::get('/welcome', function () {
+    return view('pages.index');
+})->name('welcome');
+
+require __DIR__ . '/auth.php';
