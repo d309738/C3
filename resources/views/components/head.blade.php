@@ -7,5 +7,5 @@
 <meta name="google-site-verification" content="Fdb3h6i9VSbRysXMwdteA4E2tZnedlygCcIyJBADqKo" />
 {{ $head ?? '' }}
 
-<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+@vite(['resources/css/app.css', 'resources/js/app.js'])
 <title>Schoolvoetbal</title>

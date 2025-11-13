@@ -19,4 +19,8 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 })->middleware('verified');
 
+Route::get('index', function () {
+    return view('pages.index');
+})->name('index');
+
 require __DIR__.'/auth.php';
