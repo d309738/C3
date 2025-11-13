@@ -15,6 +15,12 @@
             </div>
         </div>
         <div>
+            @auth
+    <a href="{{ route('teams.index') }}" class="btn btn-primary">Mijn Teams</a>
+@else
+    <a href="{{ route('login') }}" class="btn btn-outline-primary">Login</a>
+    <a href="{{ route('register') }}" class="btn btn-primary">Register</a>
+@endauth
 
         </div>
     </div>
