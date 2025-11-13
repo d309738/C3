@@ -9,7 +9,14 @@
         @endif
 
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold">Mijn Teams</h1>
+            <div class="flex gap-2">
+                <h1 class="text-2xl font-bold">Mijn Teams</h1>
+                <!-- Terug naar homepage knop -->
+                <a href="{{ route('home') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                    Terug naar homepage
+                </a>
+            </div>
+
             <a href="{{ route('teams.create') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
                 Nieuw Team
             </a>
@@ -51,3 +58,4 @@
 
     </div>
 </x-app-layout>
+
