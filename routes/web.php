@@ -20,17 +20,14 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 })->middleware('verified');
 
-<<<<<<< HEAD
 Route::get('index', function () {
     return view('pages.index');
 })->name('index');
 
 require __DIR__.'/auth.php';
-=======
 // 🔹 Optioneel: extra route /welcome (ook naar index.blade.php)
 Route::get('/welcome', function () {
     return view('pages.index');
 })->name('welcome');
 
 require __DIR__ . '/auth.php';
->>>>>>> a0f196f952657fbec6933243cf4ead11672f11e2
