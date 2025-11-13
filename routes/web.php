@@ -8,17 +8,15 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
 | Hier definiëren we alle webroutes van de applicatie.
-|
 */
 
-// 🔹 Homepage
+# 🔹 Homepage
 Route::get('/', function () {
     return view('pages.index');
 })->name('home');
 
-// 🔹 Routes voor ingelogde (en geverifieerde) gebruikers
+# 🔹 Routes voor ingelogde en geverifieerde gebruikers
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // Dashboard
@@ -35,7 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('teams', TeamController::class)->except(['edit','update']);
 });
 
-// 🔹 Optioneel: extra alias routes (kun je houden of verwijderen)
+# 🔹 Optionele alias routes voor homepage
 Route::get('/index', function () {
     return view('pages.index');
 })->name('index');
@@ -44,5 +42,5 @@ Route::get('/welcome', function () {
     return view('pages.index');
 })->name('welcome');
 
-// 🔹 Auth routes (login, register, etc.)
+# 🔹 Auth routes (login, register, etc.)
 require __DIR__ . '/auth.php';

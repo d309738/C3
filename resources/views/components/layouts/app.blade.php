@@ -5,7 +5,7 @@
 </head>
 <body class="flex flex-col min-h-screen">
     <x-header/>
-    <main class="flex-1 px-50 py-20">
+    <main class="flex-1 p-40">
         {{ $slot }}
     </main>
     <x-footer/>
