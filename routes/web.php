@@ -4,43 +4,30 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-| Hier definiëren we alle webroutes van de applicatie.
-*/
-
-# 🔹 Homepage
+// Homepage
 Route::get('/', function () {
     return view('pages.index');
 })->name('home');
 
-# 🔹 Routes voor ingelogde en geverifieerde gebruikers
-Route::middleware(['auth', 'verified'])->group(function () {
+// Teams bekijken - voor iedereen
+Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
+Route::get('/teams/{team}', [TeamController::class, 'show'])->name('teams.show');
 
-    // Dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+// Ingelogde en geverifieerde routes
+Route::middleware(['auth','verified'])->group(function () {
 
     // Profiel
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Teams (TeamController, zonder edit/update)
-    Route::resource('teams', TeamController::class)->except(['edit','update']);
+    // Teams CRUD (alleen ingelogd)
+    Route::get('/teams/create', [TeamController::class, 'create'])->name('teams.create');
+    Route::post('/teams', [TeamController::class, 'store'])->name('teams.store');
+    Route::delete('/teams/{team}', [TeamController::class, 'destroy'])->name('teams.destroy');
+    Route::get('/teams/{team}/edit', [TeamController::class, 'edit'])->name('teams.edit');
+    Route::put('/teams/{team}', [TeamController::class, 'update'])->name('teams.update');
 });
 
-# 🔹 Optionele alias routes voor homepage
-Route::get('/index', function () {
-    return view('pages.index');
-})->name('index');
-
-Route::get('/welcome', function () {
-    return view('pages.index');
-})->name('welcome');
-
-# 🔹 Auth routes (login, register, etc.)
+// Auth routes
 require __DIR__ . '/auth.php';
