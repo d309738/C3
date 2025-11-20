@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mijn Homepage</title>
+    <title>Schoolvoetbal</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body class="bg-blue-500 text-white min-h-screen">
 
 <header class="p-4 flex justify-between items-center bg-blue-700">
-    <h1 class="text-2xl font-bold">Mijn Website</h1>
+    <h1 class="text-2xl font-bold">Schoolvoetbal</h1>
     <nav>
-        <a href="{{ route('home') }}" class="mr-4">Home</a>
+
         @auth
             <a href="{{ route('teams.index') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
                     Teams
@@ -21,6 +21,7 @@
                 <button type="submit">Logout</button>
             </form>
         @else
+            <a href="{{ route('teams.index')}}">Teams</a>
             <a href="{{ route('login') }}" class="mr-4">Login</a>
             <a href="{{ route('register') }}">Register</a>
         @endauth
