@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\CompetitionRegistrationController;
 use Illuminate\Support\Facades\Route;
 
 // Homepage
@@ -27,6 +28,12 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('/teams/{team}/edit', [TeamController::class, 'edit'])->name('teams.edit');
     Route::put('/teams/{team}', [TeamController::class, 'update'])->name('teams.update');
     Route::delete('/teams/{team}', [TeamController::class, 'destroy'])->name('teams.destroy');
+
+    // Competitie overzicht + checkbox inschrijving
+    Route::get('/competitions', [CompetitionRegistrationController::class, 'index'])
+        ->name('competitions.index');
+    Route::post('/competitions/register', [CompetitionRegistrationController::class, 'registerTeam'])
+        ->name('competitions.registerTeam');
 });
 
 // Teams bekijken - voor iedereen

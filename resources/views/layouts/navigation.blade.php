@@ -9,10 +9,14 @@
 
                 <!-- Nav links -->
                 <div class="hidden space-x-8 sm:flex sm:ms-10">
-                    <x-nav-link :href="route('teams.index')" :active="request()->routeIs('teams.index')">
-                        {{ __('Teams') }}
-                    </x-nav-link>
-                </div>
+    <x-nav-link :href="route('teams.index')" :active="request()->routeIs('teams.*')">
+        {{ __('Teams') }}
+    </x-nav-link>
+
+    <a href="{{ route('competitions.index') }}" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+    Competities
+</a>
+</div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -50,4 +54,3 @@
         </div>
     </div>
 </nav>
-
