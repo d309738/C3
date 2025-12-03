@@ -6,6 +6,7 @@
             <a href="{{ route('teams.index') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
                     Teams
                 </a>
+                <a href="{{route ('competitions.index')}}">competitions</a>
             <form action="{{ route('logout') }}" method="POST" class="inline">
                 @csrf
                 <button type="submit">Logout</button>
