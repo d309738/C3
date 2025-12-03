@@ -9,6 +9,10 @@ Route::get('/', function () {
     return view('pages.index');
 })->name('home');
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
+
 // Teams bekijken - voor iedereen
 Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
 Route::get('/teams/{team}', [TeamController::class, 'show'])->name('teams.show');
