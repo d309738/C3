@@ -7,7 +7,7 @@
         </a>
 
         @auth
-            <a href="{{ route('teams.create') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mb-4 inline-block">
+            <a href="{{ route('teams.create') }}" class="bg-blue-500 hover:bg-blue-600 text-black px-4 py-2 rounded mb-4 inline-block">
                 Maak een nieuw team
             </a>
         @endauth
