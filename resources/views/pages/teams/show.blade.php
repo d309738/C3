@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-layouts.app>
     <div class="container mx-auto p-6">
         <h1 class="text-2xl font-bold mb-2">{{ $team->name }} ({{ $team->city }})</h1>
         <p><strong>Coach:</strong> {{ $team->coach_name }}</p>
@@ -17,4 +17,4 @@
             Terug naar homepage
         </a>
     </div>
-</x-app-layout>
+</x-layouts.app>

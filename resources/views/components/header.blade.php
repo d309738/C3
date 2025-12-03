@@ -1,23 +1,20 @@
 <header class="bg-blue-500 text-yellow-100 flex justify-between items-center p-10 min-h-[100px]">
-    <nav class="flex gap-[20px]">
-        <a href="#" class="text-yellow-200 font-bold text-4xl">Home</a>
-        <a href="{{ route('teams.read') }}" class="btn btn-primary">
-    Teams
-</a>
-        <a href="#" class="text-yellow-200 font-bold text-4xl">Speelschema</a>
-    </nav>
-    @guest
-    <div>
-        <a href="{{ route('login') }}" class="text-yellow-200 font-bold text-4xl">Login</a> |
-        <a href="{{ route('register') }}" class="text-yellow-200 font-bold text-4xl">Register</a>
-    </div>
-    @endguest
+    <h1 class="text-2xl font-bold">Schoolvoetbal</h1>
+    <nav>
 
-    @auth
-            <form action="{{route ('logout')}}" method="post">
+        @auth
+            <a href="{{ route('teams.index') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                    Teams
+                </a>
+            <form action="{{ route('logout') }}" method="POST" class="inline">
                 @csrf
-                <input type="submit" value="Logout">
+                <button type="submit">Logout</button>
             </form>
+        @else
+            <a href="{{ route('teams.index')}}">Teams</a>
+            <a href="{{ route('login') }}" class="mr-4">Login</a>
+            <a href="{{ route('register') }}">Register</a>
         @endauth
+    </nav>
 
 </header>

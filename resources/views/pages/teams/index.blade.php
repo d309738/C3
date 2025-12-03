@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-layouts.app>
     <div class="container mx-auto p-6">
 
         <h1 class="text-2xl font-bold mb-6">Teams</h1>
@@ -43,4 +43,4 @@
             Terug naar homepage
         </a>
     </div>
-</x-app-layout>
+</x-layouts.app>

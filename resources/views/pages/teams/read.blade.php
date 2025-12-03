@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-layouts.app>
     <div class="container mx-auto p-6">
         <h1 class="text-2xl font-bold mb-4">Alle Teams</h1>
 
@@ -48,4 +48,4 @@
             </div>
         @endif
     </div>
-</x-app-layout>
+</x-layouts.app>

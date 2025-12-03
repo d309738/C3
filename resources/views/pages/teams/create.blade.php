@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-layouts.app>
     <div class="container mx-auto p-6">
         <h1 class="text-2xl font-bold mb-4">Nieuw Team Aanmaken</h1>
 
@@ -64,4 +64,4 @@
         });
     });
     </script>
-</x-app-layout>
+</x-layouts.app>
