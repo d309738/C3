@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\CompetitionRegistrationController;
+use App\Http\Controllers\MatcheController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Team;
 
@@ -13,7 +14,7 @@ Route::get('/', function () {
     $team = auth()->user()->teams()->first();
     $players = $team->players;
     $top5teams = Team::orderByDesc('points', 'desc')->take(5)->get();
-    return view('pages.index', compact('top5teams', 'user', 'players'));
+    return view('pages.index', compact('top5teams', 'user', 'players', 'teams', 'team'));
 })->name('home');
 
 Route::get('/dashboard', function () {
@@ -45,6 +46,9 @@ Route::middleware(['auth','verified'])->group(function () {
 // Teams bekijken - voor iedereen
 Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
 Route::get('/teams/{team}', [TeamController::class, 'show'])->name('teams.show');
+
+// Matche store (form on homepage)
+Route::post('/matche', [MatcheController::class, 'store'])->name('matche.store')->middleware('auth');
 
 // Auth routes
 require __DIR__ . '/auth.php';
