@@ -1,5 +1,5 @@
 <header class="bg-blue-500 text-yellow-100 flex justify-between items-center p-10 min-h-[100px]">
-    <h1 class="text-2xl font-bold">Schoolvoetbal</h1>
+    <a href="{{route('home')}}" class="text-2xl font-bold">Schoolvoetbal</a>
     <nav>
 
         @auth

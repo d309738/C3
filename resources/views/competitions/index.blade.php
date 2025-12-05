@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<x-layouts.app>
 <div class="max-w-2xl mx-auto p-4">
 
     <h1 class="text-2xl font-bold mb-4">Competities inschrijven</h1>
@@ -54,4 +52,4 @@
     </form>
 
 </div>
-@endsection
+</x-layouts.app>

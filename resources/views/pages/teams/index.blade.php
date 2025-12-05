@@ -38,9 +38,5 @@
                 @endforeach
             </div>
         @endif
-
-        <a href="{{ route('home') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mt-4 inline-block">
-            Terug naar homepage
-        </a>
     </div>
 </x-layouts.app>
