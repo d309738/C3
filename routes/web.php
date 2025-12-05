@@ -9,6 +9,7 @@ use App\Models\Team;
 // Homepage
 Route::get('/', function () {
     $user = auth()->user();
+    $teams = Team::all();
     $team = auth()->user()->teams()->first();
     $players = $team->players;
     $top5teams = Team::orderByDesc('points', 'desc')->take(5)->get();

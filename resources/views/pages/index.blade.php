@@ -24,20 +24,39 @@
                 <li class="flex justify-between">
                     <p>Naam</p>
                     <p>tijd</p>
+                    <p>field</p>
                     <p>Naam</p>
                 </li>
-                <li class="flex justify-between">
-                    <p>Naam</p>
-                    <p>tijd</p>
-                    <p>Naam</p>
-                </li>
-                <li class="flex justify-between">
-                    <p>Naam</p>
-                    <p>tijd</p>
-                    <p>Naam</p>
-                </li>
+                <li><button id="openModal" class="bg-black text-white mt-4 flex mx-auto px-4 py-2 rounded">Add Team</button></li>
             </ul>
         </div>
+        <div id="modal" class="fixed inset-0 flex items-center justify-center hidden">
+            <div class="bg-white p-6 rounded shadow-lg w-96">
+                <h2 class="text-xl font-bold mb-4">Add Team</h2>
+                <form action="{{route('matche.store')}}" method="POST" class="space-y-4">
+                    @csrf
+                    <label for="">Team 1:</label>
+                    <select name="" id="">
+                        @foreach($teams as $team)
+                            <option value="{{$team->id}}">{{ $team->name }}</option>
+                        @endforeach
+                    </select>
+                    <label for="">Team 2:</label>
+                    <select name="" id="">
+                        @foreach($teams as $team)
+                            <option value="{{$team->id}}">{{ $team->name }}</option>
+                        @endforeach
+                    </select>
+                    <input type="text" name="field" id="field" class="border p-2 w-full rounded">
+                    <input type="text" name="time" id="time" class="border p-2 w-full rounded">
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" id="hideFormBtn" class="px-4 py-2 border rounded">Cancel</button>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         @auth
             <div class="w-[200px] border shadow-md m5">
             <h2 class="bg-black text-white text-center p-4">Mijn team:</h2>
@@ -55,6 +74,20 @@
         @endauth
 
     </div>
+    <script>
+        const showBtn = document.getElementById('openModal');
+        const hideBtn = document.getElementById('hideFormBtn');
+        const modal = document.getElementById('modal');
 
+        // Toon het form
+        showBtn.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+        });
+
+        // Verberg het form
+        hideBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+    </script>
 
 </x-layouts.app>
