@@ -22,7 +22,15 @@ class Team extends Model
     }
 
     public function competitions()
-{
-    return $this->belongsToMany(Competition::class, 'competition_team');
-}
+    {
+        return $this->belongsToMany(Competition::class, 'competition_team');
+    }
+    public function matchesAsTeam1()
+    {
+        return $this->hasMany(Matche::class, 'team1_id');
+    }
+    public function matchesAsTeam2()
+    {
+        return $this->hasMany(Matche::class, 'team2_id');
+    }
 }

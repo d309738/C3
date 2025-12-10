@@ -49,4 +49,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Team::class); // let op spelling!
     }
+    public function matchesAsReferee()
+    {
+        return $this->hasMany(Matche::class, 'referee_id');
+    }
 }

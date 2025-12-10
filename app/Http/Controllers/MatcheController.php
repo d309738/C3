@@ -29,7 +29,6 @@ class MatcheController extends Controller
     public function store(Request $request)
     {
         Matche::create($request->all());
-        // Redirect to the homepage after creating a match
         return redirect()->route('home');
     }
 
