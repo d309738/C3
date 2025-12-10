@@ -11,9 +11,9 @@ use App\Models\Team;
 Route::get('/', function () {
     $user = auth()->user();
     $teams = Team::all();
-    $team = auth()->user()->teams()->first();
-    $players = $team->players;
-    $top5teams = Team::orderByDesc('points', 'desc')->take(5)->get();
+    $top5teams = Team::orderByDesc('points')->take(5)->get();
+    $team = $user?->teams()->first();
+    $players = $team?->players ?? collect();
     return view('pages.index', compact('top5teams', 'user', 'players', 'teams', 'team'));
 })->name('home');
 
