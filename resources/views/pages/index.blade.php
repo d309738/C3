@@ -21,13 +21,17 @@
         <div class="w-[500px] border shadow-md m-5">
             <h2 class="bg-black text-white text-center p-4">Wedstrijdschema</h2>
             <ul class="p-4">
-                <li class="flex justify-between">
-                    <p>Naam</p>
-                    <p>tijd</p>
-                    <p>field</p>
-                    <p>Naam</p>
-                </li>
-                <li><button id="openModal" class="bg-black text-white mt-4 flex mx-auto px-4 py-2 rounded">Add Team</button></li>
+                @foreach ($matches as $matche)
+                    <li class="flex justify-between">
+                        <p>{{$matche->team1->name}}</p>
+                        <p>{{$matche->time}}</p>
+                        <p>{{$matche->field}}</p>
+                        <p>{{$matche->team2->name}}</p>
+                    </li>
+                @endforeach
+                @auth
+                    <li><button id="openModal" class="bg-black text-white mt-4 flex mx-auto px-4 py-2 rounded">Add Team</button></li>
+                @endauth
             </ul>
         </div>
         @auth

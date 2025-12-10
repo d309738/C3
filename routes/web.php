@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\CompetitionRegistrationController;
 use App\Http\Controllers\MatcheController;
+use App\Models\Matche;
 use Illuminate\Support\Facades\Route;
 use App\Models\Team;
 
@@ -14,8 +15,15 @@ Route::get('/', function () {
     $team = $user ? $user->teams()->first() : null;
     $players = $team ? $team->players : [];
     $top5teams = Team::orderByDesc('points')->take(5)->get();
+<<<<<<< HEAD
 
     return view('pages.index', compact('top5teams', 'user', 'players', 'teams', 'team'));
+=======
+    $team = $user?->teams()->first();
+    $players = $team?->players ?? collect();
+    $matches = Matche::all();
+    return view('pages.index', compact('top5teams', 'user', 'players', 'teams', 'team', 'matches'));
+>>>>>>> 0d1cb6681d268dff28e82cdbfaa67960f0dff768
 })->name('home');
 
 // Dashboard
