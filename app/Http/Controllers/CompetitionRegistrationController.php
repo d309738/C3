@@ -19,6 +19,14 @@ class CompetitionRegistrationController extends Controller
         return view('competitions.index', compact('competitions', 'teams'));
     }
 
+    public function view()
+{
+    // Laad alle competities + teams
+    $competitions = \App\Models\Competition::with('teams')->get();
+
+    return view('competitions.view', compact('competitions'));
+}
+
     /**
      * Verwerk het inschrijven van een team in één of meerdere competities
      */

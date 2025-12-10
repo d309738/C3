@@ -1,21 +1,40 @@
-<header class="bg-blue-500 text-yellow-100 flex justify-between items-center p-10 min-h-[100px]">
-    <a href="{{route('home')}}" class="text-2xl font-bold">Schoolvoetbal</a>
-    <nav>
+<header class="bg-blue-500 text-yellow-100 flex justify-between items-center p-6 min-h-[100px]">
+    <!-- Logo / Titel -->
+    <a href="{{ route('home') }}" class="text-2xl font-bold">
+        Schoolvoetbal
+    </a>
+
+    <!-- Navigatie -->
+    <nav class="flex items-center space-x-4">
+        <a href="{{ route('teams.index') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+            Teams
+        </a>
+
+        <a href="{{ route('competitions.index') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+            Competities inschrijven
+        </a>
+
+        <a href="{{ route('competitions.view') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+    Competities bekijken
+</a>
+
 
         @auth
-            <a href="{{ route('teams.index') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-                    Teams
-                </a>
-                <a href="{{route ('competitions.index')}}">competitions</a>
+            <!-- Logout knop -->
             <form action="{{ route('logout') }}" method="POST" class="inline">
                 @csrf
-                <button type="submit">Logout</button>
+                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+                    Logout
+                </button>
             </form>
         @else
-            <a href="{{ route('teams.index')}}">Teams</a>
-            <a href="{{ route('login') }}" class="mr-4">Login</a>
-            <a href="{{ route('register') }}">Register</a>
+            <!-- Gasten: Login / Register -->
+            <a href="{{ route('login') }}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+                Login
+            </a>
+            <a href="{{ route('register') }}" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded">
+                Register
+            </a>
         @endauth
     </nav>
-
 </header>

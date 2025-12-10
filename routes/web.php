@@ -11,17 +11,19 @@ use App\Models\Team;
 Route::get('/', function () {
     $user = auth()->user();
     $teams = Team::all();
-    $team = auth()->user()->teams()->first();
-    $players = $team->players;
-    $top5teams = Team::orderByDesc('points', 'desc')->take(5)->get();
+    $team = $user ? $user->teams()->first() : null;
+    $players = $team ? $team->players : [];
+    $top5teams = Team::orderByDesc('points')->take(5)->get();
+
     return view('pages.index', compact('top5teams', 'user', 'players', 'teams', 'team'));
 })->name('home');
 
+// Dashboard
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Ingelogde en geverifieerde routes
+// Auth middleware
 Route::middleware(['auth','verified'])->group(function () {
 
     // Profiel
@@ -36,19 +38,25 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::put('/teams/{team}', [TeamController::class, 'update'])->name('teams.update');
     Route::delete('/teams/{team}', [TeamController::class, 'destroy'])->name('teams.destroy');
 
-    // Competitie overzicht + checkbox inschrijving
+    // Competities lijst + inschrijving
     Route::get('/competitions', [CompetitionRegistrationController::class, 'index'])
         ->name('competitions.index');
+
     Route::post('/competitions/register', [CompetitionRegistrationController::class, 'registerTeam'])
         ->name('competitions.registerTeam');
+
+    Route::get('/competitions/view', [CompetitionRegistrationController::class, 'view'])
+        ->name('competitions.view');
 });
 
-// Teams bekijken - voor iedereen
+// Teams bekijken - publiek
 Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
 Route::get('/teams/{team}', [TeamController::class, 'show'])->name('teams.show');
 
-// Matche store (form on homepage)
-Route::post('/matche', [MatcheController::class, 'store'])->name('matche.store')->middleware('auth');
+// Matches
+Route::post('/matche', [MatcheController::class, 'store'])
+    ->name('matche.store')
+    ->middleware('auth');
 
 // Auth routes
 require __DIR__ . '/auth.php';
