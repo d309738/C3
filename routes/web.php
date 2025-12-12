@@ -15,15 +15,10 @@ Route::get('/', function () {
     $team = $user ? $user->teams()->first() : null;
     $players = $team ? $team->players : [];
     $top5teams = Team::orderByDesc('points')->take(5)->get();
-<<<<<<< HEAD
-
-    return view('pages.index', compact('top5teams', 'user', 'players', 'teams', 'team'));
-=======
     $team = $user?->teams()->first();
     $players = $team?->players ?? collect();
     $matches = Matche::all();
     return view('pages.index', compact('top5teams', 'user', 'players', 'teams', 'team', 'matches'));
->>>>>>> 0d1cb6681d268dff28e82cdbfaa67960f0dff768
 })->name('home');
 
 // Dashboard
@@ -67,4 +62,22 @@ Route::post('/matche', [MatcheController::class, 'store'])
     ->middleware('auth');
 
 // Auth routes
+
+Route::get('/matches/upcoming', function () {
+    $matches = Matche::where('played', false)
+        ->with(['team1:id,name', 'team2:id,name'])
+        ->get()
+        ->map(function ($match) {
+            return [
+                
+                'match_id' => $match->id,
+                'team1_id' => $match->team1_id,
+                'team1_name' => $match->team1->name ?? 'Unknown',
+                'team2_id' => $match->team2_id,
+                'team2_name' => $match->team2->name ?? 'Unknown',
+            ];
+        });
+
+    return response()->json($matches);
+});
 require __DIR__ . '/auth.php';
