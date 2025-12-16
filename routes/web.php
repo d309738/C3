@@ -81,3 +81,8 @@ Route::get('/matches/upcoming', function () {
     return response()->json($matches);
 });
 require __DIR__ . '/auth.php';
+
+Route::get('/matchlist', function(){
+    $matches = Matche::all();
+    return response()->json($matches);
+});
