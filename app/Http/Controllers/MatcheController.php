@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Matche;
 use Illuminate\Http\Request;
-use App\Models\Team;
 
 class MatcheController extends Controller
 {
@@ -37,16 +36,42 @@ class MatcheController extends Controller
      */
     public function store(Request $request)
     {
-        Matche::create($request->all());
-        return redirect()->route('home');
+        $match = Matche::create($request->all());
+
+        // After creating a match, redirect to the result form so the match id is visible
+        return redirect()->route('matches.result.form', ['match' => $match->id]);
     }
 
     /**
-     * Display the specified resource.
+     * Show a simple form to submit match result.
      */
-    public function show(string $id)
+    public function showResult(Matche $match)
     {
-        //
+        // optional: authorize
+        // $this->authorize('update', $match);
+        return view('matches.result', compact('match'));
+    }
+
+    /**
+     * Display the specified match and its result.
+     */
+    public function show(Matche $match)
+    {
+        return view('matches.show', compact('match'));
+    }
+
+    /**
+     * List all matches with results.
+     */
+    public function results()
+    {
+        $matches = Matche::whereNotNull('team1_score')
+            ->whereNotNull('team2_score')
+            ->with(['team1', 'team2'])
+            ->orderByDesc('updated_at')
+            ->get();
+
+        return view('matches.results', compact('matches'));
     }
 
     /**

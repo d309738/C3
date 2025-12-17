@@ -22,11 +22,22 @@
             <h2 class="bg-black text-white text-center p-4">Wedstrijdschema</h2>
             <ul class="p-4">
                 @foreach ($matches as $matche)
-                    <li class="flex justify-between">
-                        <p>{{$matche->team1->name}}</p>
-                        <p>{{$matche->time}}</p>
-                        <p>{{$matche->field}}</p>
-                        <p>{{$matche->team2->name}}</p>
+                    <li class="flex justify-between items-center space-x-4">
+                        <div class="flex-1">
+                            <strong>#{{ $matche->id ?? '—' }}</strong>
+                            <span class="ml-2">{{ $matche->team1->name }} vs {{ $matche->team2->name }}</span>
+                        </div>
+                        <div class="w-48 text-center">{{ $matche->time }}</div>
+                        <div class="w-36 text-center">{{ $matche->field }}</div>
+                        <div class="w-36 text-right">
+                            @auth
+                                @if(!is_null($matche->score_a) && !is_null($matche->score_b))
+                                    <a href="{{ route('matches.view', ['match' => $matche->id]) }}" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded">View result</a>
+                                @else
+                                    <a href="{{ route('matches.result.form', ['match' => $matche->id]) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded">Submit result</a>
+                                @endif
+                            @endauth
+                        </div>
                     </li>
                 @endforeach
                 @auth
