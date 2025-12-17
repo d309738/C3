@@ -50,6 +50,8 @@ Route::middleware(['auth','verified'])->group(function () {
 
     Route::get('/competitions/view', [CompetitionRegistrationController::class, 'view'])
         ->name('competitions.view');
+
+    Route::resource('/matche', MatcheController::class);
 });
 
 // Teams bekijken - publiek
@@ -57,9 +59,6 @@ Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
 Route::get('/teams/{team}', [TeamController::class, 'show'])->name('teams.show');
 
 // Matches
-Route::post('/matche', [MatcheController::class, 'store'])
-    ->name('matche.store')
-    ->middleware('auth');
 
 // Auth routes
 require __DIR__ . '/auth.php';

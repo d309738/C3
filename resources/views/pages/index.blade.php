@@ -30,11 +30,14 @@
                     </li>
                 @endforeach
                 @auth
-                    <li><button id="openModal" class="bg-black text-white mt-4 flex mx-auto px-4 py-2 rounded">Add Team</button></li>
+                    @if (auth()->user()->is_admin)
+                        <li><button id="openModal" class="bg-black text-white mt-4 flex mx-auto px-4 py-2 rounded">Add Team</button></li>
+                    @endif
                 @endauth
             </ul>
         </div>
         @auth
+        @if (auth()->user()->is_admin)
         <div id="modal" class="fixed inset-0 flex items-center justify-center hidden">
             <div class="bg-white p-6 rounded shadow-lg">
                 <h2 class="text-xl font-bold mb-4">Add Team</h2>
@@ -62,6 +65,7 @@
                 </form>
             </div>
         </div>
+        @endif
         @endauth
 
         @auth

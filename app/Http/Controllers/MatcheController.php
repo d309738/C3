@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Matche;
 use Illuminate\Http\Request;
+use App\Models\Team;
 
 class MatcheController extends Controller
 {
@@ -12,7 +13,15 @@ class MatcheController extends Controller
      */
     public function index()
     {
-        //
+        $user = auth()->user();
+        $teams = Team::all();
+        $team = $user ? $user->teams()->first() : null;
+        $players = $team ? $team->players : [];
+        $top5teams = Team::orderByDesc('points')->take(5)->get();
+        $team = $user?->teams()->first();
+        $players = $team?->players ?? collect();
+        $matches = Matche::all();
+        return view('pages.index', compact('top5teams', 'user', 'players', 'teams', 'team', 'matches'));
     }
 
     /**
