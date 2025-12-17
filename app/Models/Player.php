@@ -15,4 +15,9 @@ class Player extends Model
     {
         return $this->belongsTo(Team::class);
     }
+
+    public function goal()
+    {
+        return $this->hasMany(Goal::class, 'player_id');
+    }
 }

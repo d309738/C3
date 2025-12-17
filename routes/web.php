@@ -4,7 +4,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\CompetitionRegistrationController;
 use App\Http\Controllers\MatcheController;
+use App\Http\Controllers\GoalController;
 use App\Http\Controllers\Api\MatchApiController;
+use App\Models\Goal;
 use App\Models\Matche;
 use Illuminate\Support\Facades\Route;
 use App\Models\Team;
@@ -53,6 +55,7 @@ Route::middleware(['auth','verified'])->group(function () {
         ->name('competitions.view');
 
     Route::resource('/matche', MatcheController::class);
+    Route::resource('/goal', GoalController::class);
 });
 
 // Teams bekijken - publiek

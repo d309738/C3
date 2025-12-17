@@ -77,4 +77,8 @@ class Matche extends Model
         return $this->team2_id;
     }
 
+    public function goals()
+    {
+        return $this->hasMany(Goal::class, 'match_id');
+    }
 }

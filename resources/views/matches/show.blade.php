@@ -19,7 +19,29 @@
             @endauth
         </div>
     </div>
-</div>
+    <div class="max-w-lg mx-auto bg-white rounded shadow p-6 text-center mt-8">
+        @for ($i = 1; $i <= $scores; $i++)
+            <form action="{{route('goal.store')}}" method="post">
+                @csrf
+                <h2 class="text-xl font-bold mb-4">Add Goal</h2>
+                <div class="mb-4">
+                    <label for="player_id" class="block text-sm font-medium text-gray-700 mb-1">Player Name:</label>
+                    <select name="player_id" id="player_id" class="border p-2 w-full rounded">
+                        @foreach($players as $player)
+                            <option value="{{ $player->id }}">{{ $player->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="minute" class="block text-sm font-medium text-gray-700 mb-1">Minute of Goal:</label>
+                    <input type="number" name="minute" id="minute" class="border p-2 w-full rounded" placeholder="Enter minute" required>
+                </div>
+                <input type="hidden" name="match_id" value="{{ $match->id }}">
+                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Add Goal</button>
+            </form>
+        @endfor
 
+    </div>
+</div>
 </x-layouts.app>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Matche;
 use Illuminate\Http\Request;
+use App\Models\Player;
 
 class MatcheController extends Controller
 {
@@ -57,7 +58,11 @@ class MatcheController extends Controller
      */
     public function show(Matche $match)
     {
-        return view('matches.show', compact('match'));
+        $players = Player::all();
+        $scores1 = $match->team1_score ?? 0;
+        $scores2 = $match->team2_score ?? 0;
+        $scores = $scores1 + $scores2;
+        return view('matches.show', compact('match', 'players', 'scores'));
     }
 
     /**

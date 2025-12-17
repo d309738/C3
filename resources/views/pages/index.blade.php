@@ -32,9 +32,9 @@
                         <div class="w-36 text-right">
                             @auth
                                 @if(!is_null($matche->score_a) && !is_null($matche->score_b))
-                                    <a href="{{ route('matches.view', ['match' => $matche->id]) }}" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded">View result</a>
+                                    <a href="{{ route('matches.view', ['match' => $matche->id]) }}" class="bg-green-600 hover:bg-green-700 text-black px-3 py-1 rounded">View result</a>
                                 @else
-                                    <a href="{{ route('matches.result.form', ['match' => $matche->id]) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded">Submit result</a>
+                                    <a href="{{ route('matches.result.form', ['match' => $matche->id]) }}" class="bg-indigo-600 hover:bg-indigo-700 text-black px-3 py-1 rounded">Submit result</a>
                                 @endif
                             @endauth
                         </div>
