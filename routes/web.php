@@ -127,6 +127,11 @@ Route::get('/matches/upcoming', function () {
 
     return response()->json($matches);
 });
+Route::get('/bracket-demo', function () {
+    $teams = ['Ajax', 'PSV', 'Feyenoord', 'Twente', 'AZ', 'Vitesse', 'Groningen', 'Heerenveen'];
+    return view('bracket-demo', compact('teams'));
+})->name('bracket.demo');
+
 require __DIR__ . '/auth.php';
 
 Route::get('/matchlist', function(){
