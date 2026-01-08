@@ -16,6 +16,8 @@ class Matche extends Model
         'field',
         'referee_id',
         'time',
+        'round',
+        'competition_id',
     ];
 
     public function team1()

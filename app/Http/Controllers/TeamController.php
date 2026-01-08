@@ -23,7 +23,8 @@ class TeamController extends Controller
     // Toon form voor nieuw team
     public function create()
     {
-        return view('pages.teams.create');
+        $teams = Team::orderBy('name')->get();
+        return view('pages.teams.create', compact('teams'));
     }
 
     // Opslaan nieuw team

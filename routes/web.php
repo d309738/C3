@@ -56,6 +56,14 @@ Route::middleware(['auth','verified'])->group(function () {
 
     Route::resource('/matche', MatcheController::class);
     Route::resource('/goal', GoalController::class);
+
+    // Generate schedule for 8 teams (round-robin/knockout)
+    Route::post('/schedule/generate', [\App\Http\Controllers\ScheduleController::class, 'generate'])
+        ->name('schedule.generate');
+
+    // Dedicated generator page
+    Route::get('/schedules/create', [\App\Http\Controllers\ScheduleController::class, 'create'])
+        ->name('schedule.create');
 });
 
 // Teams bekijken - publiek

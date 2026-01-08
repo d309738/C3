@@ -18,6 +18,10 @@
     Competities bekijken
 </a>
 
+        <a href="{{ route('schedule.create') }}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+            Toernooi
+        </a>
+
         <a href="{{ route('matches.results') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
             Bekijk resultaten
         </a>

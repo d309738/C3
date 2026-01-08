@@ -1,108 +1,48 @@
 <x-layouts.app>
     <div class="container mx-auto p-6">
-        <h1 class="text-2xl font-bold mb-4">Nieuw Team Aanmaken</h1>
+        <h1 class="text-2xl font-bold mb-4">Toernooi genereren</h1>
 
-        @if ($errors->any())
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                <ul class="list-disc list-inside mb-0">
-                    @foreach ($errors->all() as $e)
-                        <li>{{ $e }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <form action="{{ route('teams.store') }}" method="POST">
-            @csrf
+        <div class="mb-4">
+            <p class="text-sm text-gray-600 mb-2">Selecteer maximaal 8 teams (of laat leeg om 8 teams random te kiezen). Kies type: <strong>Round-robin</strong> of <strong>Knockout</strong>.</p>
 
             <div class="mb-3">
-                <label>Teamnaam</label>
-                <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
-            </div>
-
-            <div class="mb-3">
-                <label>Stad</label>
-                <input type="text" name="city" class="form-control" value="{{ old('city') }}" required>
+                <label class="block font-medium mb-1">Teams (max 8)</label>
+                <div class="grid grid-cols-2 gap-2 max-h-48 overflow-auto border rounded p-2 bg-white">
+                    @forelse($teams as $t)
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" name="selected_teams[]" value="{{ $t->id }}" class="team-checkbox">
+                            <span>{{ $t->name }} ({{ $t->city }})</span>
+                        </label>
+                    @empty
+                        <div class="text-sm text-gray-500">Geen teams beschikbaar. Maak eerst teams aan.</div>
+                    @endforelse
+                </div>
             </div>
 
             <div class="mb-3">
-                <label>Coach naam</label>
-                <input type="text" name="coach_name" class="form-control" value="{{ old('coach_name') }}" required>
+                <label class="block font-medium mb-1">Type schema</label>
+                <label class="mr-4"><input type="radio" name="format" value="round-robin" checked> Round-robin</label>
+                <label><input type="radio" name="format" value="knockout"> Knockout (enkel eliminatie)</label>
             </div>
 
-            <div id="players-wrapper" class="mb-3">
-                <label>Spelers (minimaal 1)</label>
-                <div class="player-row mb-2">
-                    <input type="text" name="players[]" class="form-control mb-2" placeholder="Naam speler" required>
-                </div>
+            <div class="mb-3">
+                <label class="block font-medium mb-1">Starttijd (optioneel)</label>
+                <input type="datetime-local" id="start-time" class="form-control" />
             </div>
 
-            <button type="button" id="add-player" class="btn btn-secondary mb-3">Speler toevoegen</button>
-
-            <div>
-                <button type="submit" class="btn btn-success">Opslaan</button>
-                <a href="{{ route('teams.index') }}" class="btn btn-secondary">Annuleren</a>
+            <div class="flex items-center space-x-3">
+                <button type="button" id="generate-schedule-btn" class="btn btn-primary" data-url="{{ route('schedule.generate') }}">Genereer en Opslaan</button>
+                <button type="button" id="generate-schedule-preview" class="btn btn-secondary">Voorbeeld (preview)</button>
             </div>
 
-            <hr class="my-6">
-
-            <div class="mb-4">
-                <h2 class="text-xl font-semibold mb-2">Wedstrijdschema genereren</h2>
-                <p class="text-sm text-gray-600 mb-2">Selecteer maximaal 8 teams (of laat leeg om 8 teams random te kiezen). Kies type: <strong>Round-robin</strong> of <strong>Knockout</strong>.</p>
-
-                <div class="mb-3">
-                    <label class="block font-medium mb-1">Teams (max 8)</label>
-                    <div class="grid grid-cols-2 gap-2 max-h-48 overflow-auto border rounded p-2 bg-white">
-                        @forelse($teams as $t)
-                            <label class="flex items-center space-x-2">
-                                <input type="checkbox" name="selected_teams[]" value="{{ $t->id }}" class="team-checkbox">
-                                <span>{{ $t->name }} ({{ $t->city }})</span>
-                            </label>
-                        @empty
-                            <div class="text-sm text-gray-500">Geen teams beschikbaar. Maak eerst teams aan.</div>
-                        @endforelse
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="block font-medium mb-1">Type schema</label>
-                    <label class="mr-4"><input type="radio" name="format" value="round-robin" checked> Round-robin</label>
-                    <label><input type="radio" name="format" value="knockout"> Knockout (enkel eliminatie)</label>
-                </div>
-
-                <div class="mb-3">
-                    <label class="block font-medium mb-1">Starttijd (optioneel)</label>
-                    <input type="datetime-local" id="start-time" class="form-control" />
-                </div>
-
-                <div class="flex items-center space-x-3">
-                    <button type="button" id="generate-schedule-btn" class="btn btn-primary" data-url="{{ route('schedule.generate') }}">Genereer Wedstrijdschema</button>
-                    <button type="button" id="generate-schedule-preview" class="btn btn-secondary">Voorbeeld (geen opslag)</button>
-                </div>
-
-                <div id="schedule-result" class="mt-3"></div>
-            </div>
-        </form>
+            <div id="schedule-result" class="mt-3"></div>
+        </div>
     </div>
 
+    @push('scripts')
     <script>
     document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('add-player').addEventListener('click', function () {
-            const wrapper = document.getElementById('players-wrapper');
-            const div = document.createElement('div');
-            div.className = 'player-row mb-2';
-            div.innerHTML = `
-                <input type="text" name="players[]" class="form-control mb-1" placeholder="Naam speler" required>
-                <button type="button" class="btn btn-sm btn-danger remove-player">Verwijder</button>
-            `;
-            wrapper.appendChild(div);
-
-            div.querySelector('.remove-player').addEventListener('click', function () {
-                div.remove();
-            });
-        });
-
-        // Schedule generation
+        // Include the same JS used elsewhere for collecting payloads
         const genBtn = document.getElementById('generate-schedule-btn');
         const previewBtn = document.getElementById('generate-schedule-preview');
 
@@ -160,8 +100,8 @@
                         ul.className = 'list-disc list-inside';
                         rounds[r].forEach(m => {
                             const li = document.createElement('li');
-                            const t1 = m.team1 ? m.team1.name : '(TBD)';
-                            const t2 = m.team2 ? m.team2.name : '(TBD)';
+                            const t1 = m.team1 ? m.team1.name : (m.team1_id ? ('Team#'+m.team1_id) : '(TBD)');
+                            const t2 = m.team2 ? m.team2.name : (m.team2_id ? ('Team#'+m.team2_id) : '(TBD)');
                             const time = m.time ? ` — ${m.time}` : '';
                             li.textContent = `${t1} vs ${t2}${time}`;
                             ul.appendChild(li);
@@ -177,7 +117,7 @@
                 resultEl.innerHTML = `<div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">Fout: ${err.message}</div>`;
             } finally {
                 genBtn.disabled = false;
-                genBtn.textContent = 'Genereer Wedstrijdschema';
+                genBtn.textContent = 'Genereer en Opslaan';
             }
         }
 
@@ -188,11 +128,9 @@
                     if (!confirm('Er zijn geen teams geselecteerd; er worden 8 teams willekeurig gekozen. Doorgaan?')) return;
                 } else if (payload.team_ids.length !== 8) {
                     if (!confirm('U heeft minder of meer dan 8 teams geselecteerd; het systeem vereist precies 8 teams. Doorgaan met de eerste 8 gekozen teams?')) return;
-                    // trim to first 8
                     payload.team_ids = payload.team_ids.slice(0, 8);
                 }
                 payload.preview = false;
-                // send and persist
                 sendScheduleRequest(genBtn.dataset.url, payload, true);
             });
         }
@@ -206,4 +144,5 @@
         }
     });
     </script>
+    @endpush
 </x-layouts.app>

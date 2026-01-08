@@ -9,5 +9,8 @@
         {{ $slot }}
     </main>
     <x-footer/>
+
+    {{-- Allow pages to push scripts --}}
+    @stack('scripts')
 </body>
 </html>

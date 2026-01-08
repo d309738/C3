@@ -5,6 +5,7 @@
 <meta name="language" content="en">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <meta name="google-site-verification" content="Fdb3h6i9VSbRysXMwdteA4E2tZnedlygCcIyJBADqKo" />
+<meta name="csrf-token" content="{{ csrf_token() }}">
 {{ $head ?? '' }}
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])

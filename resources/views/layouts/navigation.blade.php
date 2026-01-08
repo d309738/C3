@@ -11,8 +11,7 @@
 
                 <div class="hidden sm:flex sm:ml-6 space-x-4">
                     <a href="{{ route('teams.index') }}" class="text-gray-700 hover:text-[#F53003] px-3 py-2 rounded-md text-sm font-medium">Teams</a>
-                    <a href="{{ route('competitions.index') }}" class="text-gray-700 hover:text-[#F53003] px-3 py-2 rounded-md text-sm font-medium">Competities</a>
-                </div>
+                    <a href="{{ route('competitions.index') }}" class="text-gray-700 hover:text-[#F53003] px-3 py-2 rounded-md text-sm font-medium">Competities</a>                    <a href="{{ route('schedule.create') }}" class="text-gray-700 hover:text-[#F53003] px-3 py-2 rounded-md text-sm font-medium">Toernooi</a>                </div>
             </div>
 
             <!-- Auth / CTA -->
