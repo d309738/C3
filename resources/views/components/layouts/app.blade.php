@@ -4,7 +4,7 @@
     <x-head/>
 </head>
 <body class="flex flex-col min-h-screen">
-    <x-header/>
+    @include('layouts.header')
     <main class="flex-1 p-40">
         {{ $slot }}
     </main>

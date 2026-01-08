@@ -46,6 +46,11 @@ class Matche extends Model
         return $this->team2();
     }
 
+    public function competition()
+    {
+        return $this->belongsTo(\App\Models\Competition::class, 'competition_id');
+    }
+
     // score_a / score_b accessors map to team1_score / team2_score
     public function getScoreAAttribute()
     {

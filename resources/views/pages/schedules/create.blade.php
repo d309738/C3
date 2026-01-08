@@ -26,6 +26,11 @@
             </div>
 
             <div class="mb-3">
+                <label class="block font-medium mb-1">Naam toernooi (optioneel)</label>
+                <input type="text" id="tournament-name" class="form-control" placeholder="Bv. School Cup 2026" />
+            </div>
+
+            <div class="mb-3">
                 <label class="block font-medium mb-1">Starttijd (optioneel)</label>
                 <input type="datetime-local" id="start-time" class="form-control" />
             </div>
@@ -51,7 +56,9 @@
             const format = document.querySelector('input[name="format"]:checked').value;
             const startTimeEl = document.getElementById('start-time');
             const start = startTimeEl && startTimeEl.value ? startTimeEl.value : null;
-            return { team_ids: selected.length ? selected : null, format, start_time: start };
+            const nameEl = document.getElementById('tournament-name');
+            const name = nameEl && nameEl.value ? nameEl.value.trim() : null;
+            return { team_ids: selected.length ? selected : null, format, start_time: start, tournament_name: name };
         }
 
         async function sendScheduleRequest(url, payload, save = true) {

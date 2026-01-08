@@ -22,9 +22,17 @@
             Toernooi
         </a>
 
-        <a href="{{ route('matches.results') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-            Bekijk resultaten
-        </a>
+        @if(\App\Models\Matche::where('round', 'Final')->whereNotNull('team1_score')->whereNotNull('team2_score')->exists())
+            <a href="{{ route('tournaments.index') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">
+                Alle toernooien bekijken
+            </a>
+        @endif
+
+        @if (Route::has('matches.results'))
+            <a href="{{ route('matches.results') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                Bekijk resultaten
+            </a>
+        @endif
 
 
         @auth

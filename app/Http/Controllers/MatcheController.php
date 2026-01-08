@@ -98,8 +98,16 @@ class MatcheController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(\App\Models\Matche $matche)
     {
-        //
+        $this->authorize('delete', $matche);
+
+        $matche->delete();
+
+        if (request()->wantsJson()) {
+            return response()->json(['status' => 'deleted']);
+        }
+
+        return redirect()->back()->with('status', 'Wedstrijd verwijderd');
     }
 }

@@ -21,3 +21,6 @@ Route::get('matches/played', [MatchApiController::class, 'played']);
 
 // POST result for a match (update scores and team points)
 Route::post('matches/{match}/result', [MatchApiController::class, 'storeResult']);
+
+// PATCH scores via API (used by tournament inline editing) - requires auth
+Route::patch('matches/{match}/score', [\App\Http\Controllers\Api\MatchScoreController::class, 'update'])->middleware('auth');

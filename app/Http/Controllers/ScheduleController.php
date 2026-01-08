@@ -51,7 +51,14 @@ class ScheduleController extends Controller
         $created = [];
         $previewMatches = [];
 
-        DB::transaction(function () use ($teams, $referee, $format, $start, $preview, &$created, &$previewMatches) {
+        // Create competition if name supplied (and not a preview)
+        $competitionId = null;
+        if (!$preview && $request->filled('tournament_name')) {
+            $competition = \App\Models\Competition::create(['name' => $request->input('tournament_name')]);
+            $competitionId = $competition->id;
+        }
+
+        DB::transaction(function () use ($teams, $referee, $format, $start, $preview, &$created, &$previewMatches, $competitionId) {
             $n = $teams->count();
             $baseTime = $start ? Carbon::parse($start) : Carbon::now();
             $minutes = 0;
@@ -136,7 +143,7 @@ class ScheduleController extends Controller
                         'team2' => $t2 ? ['id' => $t2->id, 'name' => $t2->name] : null,
                     ]);
                 } else {
-                    $m = Matche::create($data);
+                    $m = Matche::create($data + (isset($competitionId) ? ['competition_id' => $competitionId] : []));
                     $created[] = $m->id;
                 }
 

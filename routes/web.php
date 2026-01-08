@@ -64,6 +64,12 @@ Route::middleware(['auth','verified'])->group(function () {
     // Dedicated generator page
     Route::get('/schedules/create', [\App\Http\Controllers\ScheduleController::class, 'create'])
         ->name('schedule.create');
+
+    // Tournaments listing and view
+    Route::get('/tournaments', [\App\Http\Controllers\TournamentController::class, 'index'])
+        ->name('tournaments.index');
+    Route::get('/tournaments/{competition}', [\App\Http\Controllers\TournamentController::class, 'show'])
+        ->name('tournaments.show');
 });
 
 // Teams bekijken - publiek
@@ -91,9 +97,14 @@ Route::get('/matches/saved', function () {
 Route::get('/matches/{match}/view', [\App\Http\Controllers\MatcheController::class, 'show'])
     ->name('matches.view');
 
-// All results page
-Route::get('/results', [\App\Http\Controllers\MatcheController::class, 'results'])
+// All results listing
+Route::get('/matches/results', [\App\Http\Controllers\MatcheController::class, 'results'])
     ->name('matches.results');
+
+    // PATCH scores via API (used by tournament inline editing)
+    Route::patch('/matches/{match}/score', [\App\Http\Controllers\Api\MatchScoreController::class, 'update'])
+        ->name('matches.score')
+        ->middleware('auth');
 
 // Auth routes
 

@@ -1,42 +1,16 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <x-head/>
 </head>
-<body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
-        @include('layouts.navigation')
+<body class="flex flex-col min-h-screen">
+    @include('layouts.header')
+    <main class="flex-1 p-40">
+        {{ $slot ?? $content ?? '' }}
+    </main>
+    <x-footer/>
 
-        <!-- Page Heading -->
-        @isset($header)
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
-        @endisset
-
-        <!-- Page Content -->
-        <main>
-            @yield('content')
-        </main>
-
-        <footer class="bg-white dark:bg-[#0a0a0a] border-t border-gray-100 mt-8">
-            <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 text-sm text-gray-600 dark:text-gray-400">
-                © {{ date('Y') }} {{ config('app.name') }} — Built with ❤️
-            </div>
-        </footer>
-    </div>
+    {{-- Allow pages to push scripts --}}
+    @stack('scripts')
 </body>
 </html>
