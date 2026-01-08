@@ -31,6 +31,12 @@
         <main>
             @yield('content')
         </main>
+
+        <footer class="bg-white dark:bg-[#0a0a0a] border-t border-gray-100 mt-8">
+            <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 text-sm text-gray-600 dark:text-gray-400">
+                © {{ date('Y') }} {{ config('app.name') }} — Built with ❤️
+            </div>
+        </footer>
     </div>
 </body>
 </html>
