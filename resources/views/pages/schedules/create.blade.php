@@ -1,6 +1,6 @@
 <x-layouts.app>
     <div class="container mx-auto p-6">
-        <h1 class="text-2xl font-bold mb-4">Toernooi genereren</h1>
+        <h1 class="text-2xl font-bold mb-4">Toernooi Genereren</h1>
 
         <div class="mb-4">
             <p class="text-sm text-gray-600 mb-2">Selecteer maximaal 8 teams (of laat leeg om 8 teams random te kiezen). Kies type: <strong>Round-robin</strong> of <strong>Knockout</strong>.</p>
