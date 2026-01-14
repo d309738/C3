@@ -88,33 +88,133 @@
 
                 const data = await res.json();
                 if (data && data.matches && data.matches.length) {
-                    // Render by rounds
-                    const rounds = {};
-                    data.matches.forEach(m => {
-                        const r = m.round || 'Match';
-                        if (!rounds[r]) rounds[r] = [];
-                        rounds[r].push(m);
-                    });
+                    // If generating a knockout bracket, render the exact bracket image
+                    if (payload && payload.format === 'knockout') {
+                        // Ensure styles for overlay exist
+                        if (!document.getElementById('bracket-overlay-styles')) {
+                            const s = document.createElement('style');
+                            s.id = 'bracket-overlay-styles';
+                            s.textContent = `
+                                .bracket-image-container{position:relative;display:inline-block;max-width:100%;}
+                                .bracket-image-container img{display:block;max-width:100%;height:auto}
+                                .bracket-slot{position:absolute;color:white;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.7);background:rgba(8,20,35,.5);padding:3px 6px;border-radius:4px;white-space:nowrap;transform:translate(-50%,-50%);font-size:14px}
+                            `;
+                            document.head.appendChild(s);
+                        }
 
-                    resultEl.innerHTML = '<div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">Schema gegenereerd:</div>';
-                    Object.keys(rounds).forEach(r => {
-                        const h = document.createElement('h3');
-                        h.className = 'font-semibold mt-3';
-                        h.textContent = r;
-                        resultEl.appendChild(h);
+                        // Create container
+                        resultEl.innerHTML = '';
+                        const wrap = document.createElement('div');
+                        wrap.className = 'bracket-image-container';
 
-                        const ul = document.createElement('ul');
-                        ul.className = 'list-disc list-inside';
-                        rounds[r].forEach(m => {
-                            const li = document.createElement('li');
-                            const t1 = m.team1 ? m.team1.name : (m.team1_id ? ('Team#'+m.team1_id) : '(TBD)');
-                            const t2 = m.team2 ? m.team2.name : (m.team2_id ? ('Team#'+m.team2_id) : '(TBD)');
-                            const time = m.time ? ` — ${m.time}` : '';
-                            li.textContent = `${t1} vs ${t2}${time}`;
-                            ul.appendChild(li);
+                        // Use the exact image placed at public/images/knockout-template.png
+                        const img = document.createElement('img');
+                        img.alt = 'Knockout bracket';
+                        img.src = '/images/knockout-template.png';
+                        img.onload = () => {
+                            const naturalW = img.naturalWidth || 1365;
+                            const naturalH = img.naturalHeight || 768;
+
+                            // Helper to convert pixel positions (for 1365x768) to percent values
+                            const pxToPercent = (x, y) => ({ left: (x / 1365 * 100) + '%', top: (y / 768 * 100) + '%' });
+
+                            // Predefined positions (px coords mapped to template image)
+                            // Mapping for 4 quarterfinal matches (index 0..3). You can tweak these values.
+                            const matchPositions = [
+                                // Match 0: left-top
+                                { t1: pxToPercent(140, 115), t2: pxToPercent(140, 150) },
+                                // Match 1: left-middle
+                                { t1: pxToPercent(140, 285), t2: pxToPercent(140, 320) },
+                                // Match 2: right-middle
+                                { t1: pxToPercent(1200, 285), t2: pxToPercent(1200, 320) },
+                                // Match 3: right-bottom
+                                { t1: pxToPercent(1200, 455), t2: pxToPercent(1200, 490) },
+                            ];
+
+                            // Ensure we have exactly 4 quarterfinal matches; otherwise fallback to simple list
+                            const quarterMatches = data.matches.filter(m => (m.round || '').toLowerCase().includes('quarter'));
+                            if (quarterMatches.length >= 4) {
+                                // Place teams
+                                quarterMatches.slice(0,4).forEach((m, idx) => {
+                                    const pos = matchPositions[idx];
+                                    const name1 = m.team1 ? m.team1.name : (m.team1_id ? ('Team#'+m.team1_id) : '(TBD)');
+                                    const name2 = m.team2 ? m.team2.name : (m.team2_id ? ('Team#'+m.team2_id) : '(TBD)');
+
+                                    const el1 = document.createElement('div');
+                                    el1.className = 'bracket-slot';
+                                    el1.style.left = pos.t1.left;
+                                    el1.style.top = pos.t1.top;
+                                    el1.textContent = name1;
+                                    wrap.appendChild(el1);
+
+                                    const el2 = document.createElement('div');
+                                    el2.className = 'bracket-slot';
+                                    el2.style.left = pos.t2.left;
+                                    el2.style.top = pos.t2.top;
+                                    el2.textContent = name2;
+                                    wrap.appendChild(el2);
+                                });
+
+                                // Append image after positioning elements (image z-index lower)
+                                wrap.appendChild(img);
+                                resultEl.appendChild(wrap);
+
+                                // Add a small help text
+                                const note = document.createElement('div');
+                                note.className = 'text-sm text-gray-400 mt-2';
+                                // note.textContent = "Gebruik de exacte foto: plaats het bestand op 'public/images/knockout-template.png' als het plaatje niet zichtbaar is.";
+                                resultEl.appendChild(note);
+                            } else {
+                                // fallback to basic list view if structure unexpected
+                                resultEl.innerHTML = '<div class="bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded">Kon geen passende knockout-structuur vinden; toon als lijst.</div>';
+                                // Simple list rendering
+                                const ul = document.createElement('ul');
+                                ul.className = 'list-disc list-inside mt-2';
+                                data.matches.forEach(m => {
+                                    const li = document.createElement('li');
+                                    const t1 = m.team1 ? m.team1.name : (m.team1_id ? ('Team#'+m.team1_id) : '(TBD)');
+                                    const t2 = m.team2 ? m.team2.name : (m.team2_id ? ('Team#'+m.team2_id) : '(TBD)');
+                                    const time = m.time ? ` — ${m.time}` : '';
+                                    li.textContent = `${(m.round ? m.round + ': ' : '')}${t1} vs ${t2}${time}`;
+                                    ul.appendChild(li);
+                                });
+                                resultEl.appendChild(ul);
+                            }
+                        };
+
+                        img.onerror = () => {
+                            resultEl.innerHTML = '<div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">Kon bracket-beeld niet laden. Zorg dat het bestand bestaat op <code>public/images/knockout-template.png</code>.</div>';
+                        };
+
+                    } else {
+                        // Default rendering: by rounds
+                        const rounds = {};
+                        data.matches.forEach(m => {
+                            const r = m.round || 'Match';
+                            if (!rounds[r]) rounds[r] = [];
+                            rounds[r].push(m);
                         });
-                        resultEl.appendChild(ul);
-                    });
+
+                        resultEl.innerHTML = '<div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">Schema gegenereerd:</div>';
+                        Object.keys(rounds).forEach(r => {
+                            const h = document.createElement('h3');
+                            h.className = 'font-semibold mt-3';
+                            h.textContent = r;
+                            resultEl.appendChild(h);
+
+                            const ul = document.createElement('ul');
+                            ul.className = 'list-disc list-inside';
+                            rounds[r].forEach(m => {
+                                const li = document.createElement('li');
+                                const t1 = m.team1 ? m.team1.name : (m.team1_id ? ('Team#'+m.team1_id) : '(TBD)');
+                                const t2 = m.team2 ? m.team2.name : (m.team2_id ? ('Team#'+m.team2_id) : '(TBD)');
+                                const time = m.time ? ` — ${m.time}` : '';
+                                li.textContent = `${t1} vs ${t2}${time}`;
+                                ul.appendChild(li);
+                            });
+                            resultEl.appendChild(ul);
+                        });
+                    }
                 } else if (data && data.message) {
                     resultEl.innerHTML = `<div class="bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded">${data.message}</div>`;
                 } else {
